@@ -1,0 +1,11 @@
+﻿  main.c
+c:\users\tsecc\google drive\work\year 2\programming\maze\mazelab\mazelab\main.c(38): warning C4133: 'function': incompatible types - from 'char *' to 'FILE *const '
+c:\users\tsecc\google drive\work\year 2\programming\maze\mazelab\mazelab\main.c(43): warning C4098: 'getMazeData': 'void' function returning a value
+c:\users\tsecc\google drive\work\year 2\programming\maze\mazelab\mazelab\main.c(31): warning C4133: 'initializing': incompatible types - from 'FILE *' to 'char *'
+c:\users\tsecc\google drive\work\year 2\programming\maze\mazelab\mazelab\main.c(50): warning C4013: 'malloc' undefined; assuming extern returning int
+c:\users\tsecc\google drive\work\year 2\programming\maze\mazelab\mazelab\main.c(50): warning C4047: '=': 'int **' differs in levels of indirection from 'int'
+c:\users\tsecc\google drive\work\year 2\programming\maze\mazelab\mazelab\main.c(56): warning C4047: '=': 'int *' differs in levels of indirection from 'int'
+c:\users\tsecc\google drive\work\year 2\programming\maze\mazelab\mazelab\main.c(401): warning C4013: 'free' undefined; assuming extern returning int
+c:\users\tsecc\google drive\work\year 2\programming\maze\mazelab\mazelab\main.c(163): warning C4715: 'toBinary': not all control paths return a value
+  MazeLab.vcxproj -> C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze\MazeLab\Debug\MazeLab.exe
+  MazeLab.vcxproj -> C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze\MazeLab\Debug\MazeLab.pdb (Full PDB)
