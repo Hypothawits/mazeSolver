@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "main.h"
@@ -18,9 +19,8 @@ typedef struct WALLS {
 //add Bool typedef to make code easier to read?
 typedef enum
 {
-	false =0,
-	true = 1
-
+	False = 0,
+	True = 1
 }Bool;
 
 void getMazeData(int** maze, FILE* mazeFile, COORD size)
@@ -39,8 +39,7 @@ void getMazeData(int** maze, FILE* mazeFile, COORD size)
 			maze[i][j] = mazeValue;				//Stores 
 		}
 	}
-
-	return(1);
+	return;
 }
 
 int** create2DArray(COORD size) 
@@ -153,7 +152,7 @@ WALLS toBinary(int decimal) {
 		walls.D = 1;
 		walls.R = 0;
 		return(walls);
-	case 15:
+	default:	//all walls (value 15) should never enter into this position
 		walls.U = 1;
 		walls.L = 1;
 		walls.D = 1;
@@ -162,10 +161,10 @@ WALLS toBinary(int decimal) {
 	}
 }
 
-int pathFinder(int** maze, COORD* pathArray, char *stepNumber, COORD* pos, COORD endMaze)
+char pathFinder(int** maze, COORD* pathArray, int *stepNumber, COORD* pos, COORD endMaze)
 {
 	//char 'Boolean" for when path is found
-	char pathFound = 0;
+	char pathFound = False;
 
 	//Check if current position is the End location (then End)
 	if (pos[0].X == endMaze.X && pos[0].Y == endMaze.Y)
@@ -177,7 +176,7 @@ int pathFinder(int** maze, COORD* pathArray, char *stepNumber, COORD* pos, COORD
 		//increment stepNumber
 		*stepNumber += 1;
 		// Rutern pathFound true
-		return(1);	
+		return(True);
 	}
 	else
 	{
@@ -191,7 +190,7 @@ int pathFinder(int** maze, COORD* pathArray, char *stepNumber, COORD* pos, COORD
 			//loop Through all visited locations in pathArray and check if overlapping
 			if (pos[0].X == pathArray[i].X && pos[0].Y == pathArray[i].Y)
 			{
-				overlap = 1; // Set overlap to true
+				overlap = 1; // Set overlap to True
 			}
 		}
 
@@ -206,7 +205,7 @@ int pathFinder(int** maze, COORD* pathArray, char *stepNumber, COORD* pos, COORD
 			pos[0].Y = pathArray[*stepNumber].Y;
 			
 			// Return pathFound False
-			return(0); 
+			return(False);
 		}
 		else
 		{	//Current Location is not on path already taken, look for new direction to move in.
@@ -289,15 +288,14 @@ int pathFinder(int** maze, COORD* pathArray, char *stepNumber, COORD* pos, COORD
 				pos[0].Y = pathArray[*stepNumber].Y;
 
 				// Return pathFound False
-				return(0);
+				return(False);
 			}
 			else
 			{	//Path has been found, return 1!
-				return(1);
+				return(True);
 			}
 		}
 	}
-	return(1);
 }
 
 int main(int argc, char *argv[])
@@ -309,9 +307,9 @@ int main(int argc, char *argv[])
 	}
 
 	//Error variables
-	errno_t error = 0;	//general error ####remove if unused
-	errno_t errorM = 0;	//maze error
-	errno_t errorS = 0; //solution error
+	errno_t errorW = 0;	//write error
+	errno_t errorM = 0;	//maze open error
+	errno_t errorS = 0; //solution open error
 
 	//get file name from userer
 	char* mazeFileName = argv[1];
@@ -362,44 +360,101 @@ int main(int argc, char *argv[])
 
 
 	//Creates a Coordinate Array. So each step of the path will have an x and y value
-	COORD pathArray[1000];
-	char stepNumber = 0;
+	COORD pathArray[1000000];	//assumes that maze path will take less than 1 Million 
+	int stepNumber = 0;
 	
 	//Set Position to start location
 	COORD position;
 	position.X = startMaze.X;
 	position.Y = startMaze.Y;
 
-
+	//Find a Path through the maze (returns true is path found)
 	int pathFound = pathFinder(maze, pathArray, &stepNumber, &position, endMaze);
+
+	//If a path was found, convert the steps into directions (U,D,L,R)
+	//and write the direction (append) to the solution file
+	if (pathFound)
+	{	//Loop through all steps up to step number
+		//Compare current location with next location
+		
+		//write number of moves required to solve maze to solutionFile
+		errorW = fprintf_s(solutionFile,"%d",stepNumber);	
+		errorW = fprintf_s(solutionFile, "\n");			//add new line
+
+		int i;
+		for (i = 0; i < stepNumber; i++)
+		{
+			char xMove = pathArray[i + 1].X - pathArray[i].X;
+			char yMove = pathArray[i + 1].Y - pathArray[i].Y;
+
+			if (xMove)
+			{	//if xMove is non-zero; Move was in x direction
+				switch (xMove)	//swtich case for finding direction on selected axis
+				{
+				case 1:		//Case: moved Right (R)
+					errorW = fprintf_s(solutionFile, "R ");
+					break;
+
+				case -1:	//Case: moved Left (L)
+					errorW = fprintf_s(solutionFile, "L ");
+					break;
+
+				default:	//Case: Error
+					break;
+				}
+			}
+			else
+			{	//if yMove is non-zero; Move was in y direction
+				switch (yMove)	//swtich case for finding direction on selected axis
+				{
+				case 1:		//Case: moved Down (D)
+					errorW = fprintf_s(solutionFile, "D ");
+					break;
+
+				case -1:	//Case: moved Up (U)
+					errorW = fprintf_s(solutionFile, "U ");
+					break;
+
+				default:	//Case: Error
+					break;
+				}
+			}
+		}
+	}
+	else
+	{
+		printf("No Path found, Maze not solved!");
+	}
+
 
 
 
 //Debuging Print 
-	printf("\n Size:%d-%d\n Start:%d-%d\n End:%d-%d",
+	printf("\n Size:	%d-%d\n Start:	%d - %d\n End:	%d-%d",
 		sizeMaze.X, sizeMaze.Y,
 		startMaze.X, startMaze.Y,
 		endMaze.X, endMaze.Y);
 
-	int i,j;
-	printf("\n");
-	for (j = 0; j < sizeMaze.Y; j++)
-	{
-		for (i = 0; i < sizeMaze.X; i++)
-		{
-			printf(" %d", maze[i][j]);
-		}
-		printf("\n");
-	}
+	//int i,j;
+	//printf("\n");
+	//for (j = 0; j < sizeMaze.Y; j++)
+	//{
+	//	for (i = 0; i < sizeMaze.X; i++)
+	//	{
+	//		printf(" %d", maze[i][j]);
+	//	}
+	//	printf("\n");
+	//}
 
-	printf("\nMaze Route Found? %d", pathFound);
+	printf("\nMaze Route Found: %d", pathFound);
+	printf("\nNumber of Steps: %d", stepNumber);
 
 //End Debuging Print
 
-	while (1);
+	while (True);
 	//Close the file
 	free(maze);
 	fclose(mazeFile);
+
 	return(0);
 }
-
