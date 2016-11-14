@@ -16,7 +16,28 @@ typedef struct WALLS {
 	char U; char L; char D;  char R; 
 }WALLS;
 
-//add Bool typedef to make code easier to read?
+typedef struct MAZEDATA
+{
+	//Maze data
+	int**	maze;
+	
+	//Start and End locations
+	COORD	endMaze;
+	COORD	startMaze;
+	
+	//MAze Size
+	COORD	sizeMaze;
+	
+	//A Coordinate Array. So each step of the path will have an x and y value
+	COORD	pathArray[1000000];	//assumes that maze path will take less than 1 Million 
+	//Current position in the maze
+	COORD	position;
+	
+	//number of steps taken
+	int		stepNumber;
+	
+}MAZEDATA;
+
 typedef enum
 {
 	False = 0,
@@ -161,20 +182,20 @@ WALLS toBinary(int decimal) {
 	}
 }
 
-char pathFinder(int** maze, COORD* pathArray, int *stepNumber, COORD* pos, COORD endMaze)
+char pathFinder(MAZEDATA* mData)
 {
 	//char 'Boolean" for when path is found
 	char pathFound = False;
-
+	
 	//Check if current position is the End location (then End)
-	if (pos[0].X == endMaze.X && pos[0].Y == endMaze.Y)
+	if (mData->position.X == mData->endMaze.X && mData->position.Y == mData->endMaze.Y)
 	{	//End has been reached
 
 		//Add current pos to pathArray
-		pathArray[*stepNumber].X = pos[0].X;
-		pathArray[*stepNumber].Y = pos[0].Y;
+		mData->pathArray[mData->stepNumber].X = mData->position.X;
+		mData->pathArray[mData->stepNumber].Y = mData->position.Y;
 		//increment stepNumber
-		*stepNumber += 1;
+		mData->stepNumber += 1;
 		// Rutern pathFound true
 		return(True);
 	}
@@ -185,10 +206,10 @@ char pathFinder(int** maze, COORD* pathArray, int *stepNumber, COORD* pos, COORD
 		char overlap = 0;
 		//Step through till currrent number of steps taken reached (to prevent checking unused steps in array)
 		//not including current step (not added to array yet) hence 'stepNumber-1'
-		for (i = 0; i < *stepNumber-1; i++)
+		for (i = 0; i < mData->stepNumber-1; i++)
 		{
 			//loop Through all visited locations in pathArray and check if overlapping
-			if (pos[0].X == pathArray[i].X && pos[0].Y == pathArray[i].Y)
+			if (mData->position.X == mData->pathArray[i].X && mData->position.Y == mData->pathArray[i].Y)
 			{
 				overlap = 1; // Set overlap to True
 			}
@@ -199,10 +220,10 @@ char pathFinder(int** maze, COORD* pathArray, int *stepNumber, COORD* pos, COORD
 		
 			// Dont add new position to pathArray
 			// decrement stepNumber
-			*stepNumber -= 1;
+			mData->stepNumber -= 1;
 			// set pos to previous position from pathArray
-			pos[0].X = pathArray[*stepNumber].X;
-			pos[0].Y = pathArray[*stepNumber].Y;
+			mData->position.X = mData->pathArray[mData->stepNumber].X;
+			mData->position.Y = mData->pathArray[mData->stepNumber].Y;
 			
 			// Return pathFound False
 			return(False);
@@ -211,21 +232,21 @@ char pathFinder(int** maze, COORD* pathArray, int *stepNumber, COORD* pos, COORD
 		{	//Current Location is not on path already taken, look for new direction to move in.
 			//Check which directions are free to move in, and where the path was found in a previous direction and isreturning from recursion
 			//Convert to "binary" values, where 1 indecates a wall in that direction.
-			WALLS walls = toBinary(maze[pos[0].X][pos[0].Y]);
+			WALLS walls = toBinary(mData->maze[mData->position.X][mData->position.Y]);
 			if (walls.U == 0 && !pathFound)
 			{	//Can move in Up direction
 
 				//Prepare to move (recursive step):
 				//Add current pos to pathArray
-				pathArray[*stepNumber].X = pos[0].X;
-				pathArray[*stepNumber].Y = pos[0].Y;
+				mData->pathArray[mData->stepNumber].X = mData->position.X;
+				mData->pathArray[mData->stepNumber].Y = mData->position.Y;
 				//increment stepNumber
-				*stepNumber += 1;
+				mData->stepNumber += 1;
 				//move pos up
-				pos[0].Y--;
+				mData->position.Y--;
 
 				//Enter Next level of recursion
-				pathFound = pathFinder(maze, pathArray, stepNumber, pos, endMaze);
+				pathFound = pathFinder(mData);
 			}
 
 			if (walls.D == 0 && !pathFound)
@@ -233,15 +254,15 @@ char pathFinder(int** maze, COORD* pathArray, int *stepNumber, COORD* pos, COORD
 			
 				//Prepare to move (recursive step):
 				//Add current pos to pathArray
-				pathArray[*stepNumber].X = pos[0].X;
-				pathArray[*stepNumber].Y = pos[0].Y;
+				mData->pathArray[mData->stepNumber].X = mData->position.X;
+				mData->pathArray[mData->stepNumber].Y = mData->position.Y;
 				//increment stepNumber
-				*stepNumber += 1;
+				mData->stepNumber += 1;
 				//move pos down
-				pos[0].Y++;
+				mData->position.Y++;
 
 				//Enter Next level of recursion
-				pathFound = pathFinder(maze, pathArray, stepNumber, pos, endMaze);
+				pathFound = pathFinder(mData);
 			}
 
 			if (walls.L == 0 && !pathFound)
@@ -249,15 +270,15 @@ char pathFinder(int** maze, COORD* pathArray, int *stepNumber, COORD* pos, COORD
 				
 				//Prepare to move (recursive step):				
 				//Add current pos to pathArray
-				pathArray[*stepNumber].X = pos[0].X;
-				pathArray[*stepNumber].Y = pos[0].Y;
+				mData->pathArray[mData->stepNumber].X = mData->position.X;
+				mData->pathArray[mData->stepNumber].Y = mData->position.Y;
 				//increment stepNumber
-				*stepNumber += 1;
+				mData->stepNumber += 1;
 				//move pos left
-				pos[0].X--;
+				mData->position.X--;
 
 				//Enter Next level of recursion
-				pathFound = pathFinder(maze, pathArray, stepNumber, pos, endMaze);
+				pathFound = pathFinder(mData);
 			}
 
 			if (walls.R == 0 && !pathFound)
@@ -265,15 +286,15 @@ char pathFinder(int** maze, COORD* pathArray, int *stepNumber, COORD* pos, COORD
 
 				//Prepare to move (recursive step):
 				//Add current pos to pathArray
-				pathArray[*stepNumber].X = pos[0].X;
-				pathArray[*stepNumber].Y = pos[0].Y;
+				mData->pathArray[mData->stepNumber].X = mData->position.X;
+				mData->pathArray[mData->stepNumber].Y = mData->position.Y;
 				//increment stepNumber
-				*stepNumber += 1;
+				mData->stepNumber += 1;
 				//move pos right
-				pos[0].X++;
+				mData->position.X++;
 
 				//Enter Next level of recursion
-				pathFound = pathFinder(maze, pathArray, stepNumber, pos, endMaze);
+				pathFound = pathFinder(mData);
 			}
 			
 			if (pathFound == 0)
@@ -282,10 +303,10 @@ char pathFinder(int** maze, COORD* pathArray, int *stepNumber, COORD* pos, COORD
 				
 				// Dont add new position to pathArray
 				// decrement stepNumber
-				*stepNumber -= 1;
+				mData->stepNumber -= 1;
 				// set pos to previous position from pathArray
-				pos[0].X = pathArray[*stepNumber].X;
-				pos[0].Y = pathArray[*stepNumber].Y;
+				mData->position.X = mData->pathArray[mData->stepNumber].X;
+				mData->position.Y = mData->pathArray[mData->stepNumber].Y;
 
 				// Return pathFound False
 				return(False);
@@ -338,38 +359,38 @@ int main(int argc, char *argv[])
 		printf("Files Loaded");
 	}
 
+	//Create an instance of the MAZEDATA struct to store all data related to the maze
+	MAZEDATA mazeData;
+
 	//read in maze size, start and end location, store XY values in Coordinate Struct
-	COORD sizeMaze, startMaze, endMaze;
+	//COORD sizeMaze, startMaze, endMaze;
 	int foundValues;	//Store the number of successful values read
 	foundValues = fscanf_s(mazeFile, "%d %d %d %d %d %d ",
-		&sizeMaze.X, &sizeMaze.Y,
-		&startMaze.X, &startMaze.Y,
-		&endMaze.X, &endMaze.Y);
+		&mazeData.sizeMaze.X,	&mazeData.sizeMaze.Y,
+		&mazeData.startMaze.X,	&mazeData.startMaze.Y,
+		&mazeData.endMaze.X,	&mazeData.endMaze.Y);
 	//Check if all values successfully read in, should have 6 values
 	if (foundValues != 6)
 	{
 		printf("Error reading in Size, starting location and End location");
 		return (-1);
 	}
-
+	
 	//Create Maze Array ( Using Malloc for Dynamic Array setting)
-	int **maze = create2DArray(sizeMaze);		//create 2D array
+	mazeData.maze = create2DArray(mazeData.sizeMaze);//create 2D array	
 
 	//Call GetMazeData to read in the Maze values.
-	getMazeData(maze, mazeFile, sizeMaze);
+	getMazeData(mazeData.maze, mazeFile, mazeData.sizeMaze);
 
-
-	//Creates a Coordinate Array. So each step of the path will have an x and y value
-	COORD pathArray[1000000];	//assumes that maze path will take less than 1 Million 
-	int stepNumber = 0;
+	//Sets the initial Step number to Zero
+	mazeData.stepNumber = 0;
 	
-	//Set Position to start location
-	COORD position;
-	position.X = startMaze.X;
-	position.Y = startMaze.Y;
+	//Set initial position to start location
+	mazeData.position = mazeData.startMaze;
 
 	//Find a Path through the maze (returns true is path found)
-	int pathFound = pathFinder(maze, pathArray, &stepNumber, &position, endMaze);
+	int pathFound = pathFinder(&mazeData);
+	//int pathFound = pathFinder(maze, pathArray, &stepNumber, &position, endMaze);
 
 	//If a path was found, convert the steps into directions (U,D,L,R)
 	//and write the direction (append) to the solution file
@@ -378,14 +399,14 @@ int main(int argc, char *argv[])
 		//Compare current location with next location
 		
 		//write number of moves required to solve maze to solutionFile
-		errorW = fprintf_s(solutionFile,"%d",stepNumber);	
+		errorW = fprintf_s(solutionFile,"%d",mazeData.stepNumber);	
 		errorW = fprintf_s(solutionFile, "\n");			//add new line
 
 		int i;
-		for (i = 0; i < stepNumber; i++)
+		for (i = 0; i < mazeData.stepNumber; i++)
 		{
-			char xMove = pathArray[i + 1].X - pathArray[i].X;
-			char yMove = pathArray[i + 1].Y - pathArray[i].Y;
+			char xMove = mazeData.pathArray[i + 1].X - mazeData.pathArray[i].X;
+			char yMove = mazeData.pathArray[i + 1].Y - mazeData.pathArray[i].Y;
 
 			if (xMove)
 			{	//if xMove is non-zero; Move was in x direction
@@ -431,9 +452,9 @@ int main(int argc, char *argv[])
 
 //Debuging Print 
 	printf("\n Size:	%d-%d\n Start:	%d - %d\n End:	%d-%d",
-		sizeMaze.X, sizeMaze.Y,
-		startMaze.X, startMaze.Y,
-		endMaze.X, endMaze.Y);
+		mazeData.sizeMaze.X,	mazeData.sizeMaze.Y,
+		mazeData.startMaze.X,	mazeData.startMaze.Y,
+		mazeData.endMaze.X,		mazeData.endMaze.Y);
 
 	//int i,j;
 	//printf("\n");
@@ -447,13 +468,13 @@ int main(int argc, char *argv[])
 	//}
 
 	printf("\nMaze Route Found: %d", pathFound);
-	printf("\nNumber of Steps: %d", stepNumber);
+	printf("\nNumber of Steps: %d", mazeData.stepNumber);
 
 //End Debuging Print
 
 	while (True);
 	//Close the file
-	free(maze);
+	free(mazeData.maze);
 	fclose(mazeFile);
 
 	return(0);
