@@ -1,5 +1,5 @@
 ﻿  main.c
-c:\users\tsecc\google drive\work\year 2\programming\maze.git\mazelab\mazelab\main.c(59): warning C4133: 'function': incompatible types - from 'char *' to 'FILE *const '
-c:\users\tsecc\google drive\work\year 2\programming\maze.git\mazelab\mazelab\main.c(52): warning C4133: 'initializing': incompatible types - from 'FILE *' to 'char *'
+c:\users\tsecc\google drive\work\year 2\programming\maze.git\mazelab\mazelab\main.c(226): warning C4133: 'function': incompatible types - from 'char *' to 'FILE *const '
+c:\users\tsecc\google drive\work\year 2\programming\maze.git\mazelab\mazelab\main.c(219): warning C4133: 'initializing': incompatible types - from 'FILE *' to 'char *'
   MazeLab.vcxproj -> C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze.Git\MazeLab\Debug\MazeLab.exe
   MazeLab.vcxproj -> C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze.Git\MazeLab\Debug\MazeLab.pdb (Full PDB)
