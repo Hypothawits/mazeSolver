@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
 	errno_t errorS = 0; //solution open error
 
 	//get file name from userer
-	char* mazeFileName = argv[1];
-	char* solutionFileName = argv[2];
+	char* mazeFileName		= argv[1];
+	char* solutionFileName	= argv[2];
 
 	//open files, store any errors
 	FILE *mazeFile;
@@ -74,7 +74,6 @@ int main(int argc, char *argv[])
 
 	//Find a Path through the maze (returns true is path found)
 	int pathFound = pathFinder(&mazeData);
-	//int pathFound = pathFinder(maze, pathArray, &stepNumber, &position, endMaze);
 
 	//If a path was found, convert the steps into directions (U,D,L,R)
 	//and write the direction (append) to the solution file
@@ -134,7 +133,7 @@ int main(int argc, char *argv[])
 
 
 
-//Debuging Print 
+//Debugging Print 
 	printf("\n Size:	%d-%d\n Start:	%d - %d\n End:	%d-%d",
 		mazeData.sizeMaze.X,	mazeData.sizeMaze.Y,
 		mazeData.startMaze.X,	mazeData.startMaze.Y,
@@ -154,7 +153,7 @@ int main(int argc, char *argv[])
 	printf("\nMaze Route Found: %d", pathFound);
 	printf("\nNumber of Steps: %d", mazeData.stepNumber);
 
-//End Debuging Print
+//End Debugging Print
 
 	while (True);
 	//Close the file
@@ -191,7 +190,7 @@ int** create2DArray(COORD size)
 	
 	//Loop through the Number of Columns Creating the Number of Rows
 	int i;
-	for (i = 0; i<size.Y; i++)					
+	for (i = 0; i < size.X; i++)					
 	{
 		newArray[i] = malloc(size.Y * sizeof(int));
 	}
@@ -204,94 +203,94 @@ WALLS toBinary(int decimal) {
 	switch (decimal)
 	{
 	case 0:
-		walls.U = 0;
-		walls.L = 0;
-		walls.D = 0;
-		walls.R = 0;
+		walls.U = False;
+		walls.L = False;
+		walls.D = False;
+		walls.R = False;
 		return(walls);
 	case 1:
-		walls.U = 0;
-		walls.L = 0;
-		walls.D = 0;
-		walls.R = 1;
+		walls.U = False;
+		walls.L = False;
+		walls.D = False;
+		walls.R = True;
 		return(walls);
 	case 2:
-		walls.U = 0;
-		walls.L = 0;
-		walls.D = 1;
-		walls.R = 0;
+		walls.U = False;
+		walls.L = False;
+		walls.D = True;
+		walls.R = False;
 		return(walls);
 	case 3:
-		walls.U = 0;
-		walls.L = 0;
-		walls.D = 1;
-		walls.R = 1;
+		walls.U = False;
+		walls.L = False;
+		walls.D = True;
+		walls.R = True;
 		return(walls);
 	case 4:
-		walls.U = 0;
-		walls.L = 1;
-		walls.D = 0;
-		walls.R = 0;
+		walls.U = False;
+		walls.L = True;
+		walls.D = False;
+		walls.R = False;
 		return(walls);
 	case 5:
-		walls.U = 0;
-		walls.L = 1;
-		walls.D = 0;
-		walls.R = 1;
+		walls.U = False;
+		walls.L = True;
+		walls.D = False;
+		walls.R = True;
 		return(walls);
 	case 6:
-		walls.U = 0;
-		walls.L = 1;
-		walls.D = 1;
-		walls.R = 0;
+		walls.U = False;
+		walls.L = True;
+		walls.D = True;
+		walls.R = False;
 		return(walls);
 	case 7:
-		walls.U = 0;
-		walls.L = 1;
-		walls.D = 1;
-		walls.R = 1;
+		walls.U = False;
+		walls.L = True;
+		walls.D = True;
+		walls.R = True;
 		return(walls);
 	case 8:
-		walls.U = 1;
-		walls.L = 0;
-		walls.D = 0;
-		walls.R = 0;
+		walls.U = True;
+		walls.L = False;
+		walls.D = False;
+		walls.R = False;
 		return(walls);
 	case 9:
-		walls.U = 1;
-		walls.L = 0;
-		walls.D = 0;
-		walls.R = 1;
+		walls.U = True;
+		walls.L = False;
+		walls.D = False;
+		walls.R = True;
 		return(walls);
 	case 10:
-		walls.U = 1;
-		walls.L = 0;
-		walls.D = 1;
-		walls.R = 0;
+		walls.U = True;
+		walls.L = False;
+		walls.D = True;
+		walls.R = False;
 		return(walls);
 	case 11:
-		walls.U = 1;
-		walls.L = 0;
-		walls.D = 1;
-		walls.R = 1;
+		walls.U = True;
+		walls.L = False;
+		walls.D = True;
+		walls.R = True;
 		return(walls);
 	case 12:
-		walls.U = 1;
-		walls.L = 1;
-		walls.D = 0;
-		walls.R = 0;
+		walls.U = True;
+		walls.L = True;
+		walls.D = False;
+		walls.R = False;
 		return(walls);
 	case 13:
-		walls.U = 1;
-		walls.L = 1;
-		walls.D = 0;
-		walls.R = 1;
+		walls.U = True;
+		walls.L = True;
+		walls.D = False;
+		walls.R = True;
 		return(walls);
 	case 14:
-		walls.U = 1;
-		walls.L = 1;
-		walls.D = 1;
-		walls.R = 0;
+		walls.U = True;
+		walls.L = True;
+		walls.D = True;
+		walls.R = False;
 		return(walls);
 	default:	//all walls (value 15) should never enter into this position
 		walls.U = 1;
@@ -313,6 +312,57 @@ char moveUpMaze(MAZEDATA* mData)
 	mData->stepNumber += 1;
 	//move pos up
 	mData->position.Y--;
+
+	//Enter Next level of recursion
+	char pathFound = pathFinder(mData);
+	return(pathFound);
+}
+
+char moveDownMaze(MAZEDATA* mData)
+{	//Can move in Down direction
+
+	//Prepare to move (recursive step):
+	//Add current pos to pathArray
+	mData->pathArray[mData->stepNumber].X = mData->position.X;
+	mData->pathArray[mData->stepNumber].Y = mData->position.Y;
+	//increment stepNumber
+	mData->stepNumber += 1;
+	//move pos down
+	mData->position.Y++;
+
+	//Enter Next level of recursion
+	char pathFound = pathFinder(mData);
+	return(pathFound);
+}
+
+char moveRightMaze(MAZEDATA* mData)
+{	//Can move in Right direction
+
+	//Prepare to move (recursive step):
+	//Add current pos to pathArray
+	mData->pathArray[mData->stepNumber].X = mData->position.X;
+	mData->pathArray[mData->stepNumber].Y = mData->position.Y;
+	//increment stepNumber
+	mData->stepNumber += 1;
+	//move pos right
+	mData->position.X++;
+
+	//Enter Next level of recursion
+	char pathFound = pathFinder(mData);
+	return(pathFound);
+}
+
+char moveLeftMaze(MAZEDATA* mData)
+{	//Can move in Left direction
+				
+	//Prepare to move (recursive step):				
+	//Add current pos to pathArray
+	mData->pathArray[mData->stepNumber].X = mData->position.X;
+	mData->pathArray[mData->stepNumber].Y = mData->position.Y;
+	//increment stepNumber
+	mData->stepNumber += 1;
+	//move pos left
+	mData->position.X--;
 
 	//Enter Next level of recursion
 	char pathFound = pathFinder(mData);
@@ -372,67 +422,22 @@ char pathFinder(MAZEDATA* mData)
 			WALLS walls = toBinary(mData->maze[mData->position.X][mData->position.Y]);
 			if (walls.U == 0 && !pathFound)
 			{	//Can move in Up direction
-
 				pathFound = moveUpMaze(mData);
-				////Prepare to move (recursive step):
-				////Add current pos to pathArray
-				//mData->pathArray[mData->stepNumber].X = mData->position.X;
-				//mData->pathArray[mData->stepNumber].Y = mData->position.Y;
-				////increment stepNumber
-				//mData->stepNumber += 1;
-				////move pos up
-				//mData->position.Y--;
-
-				////Enter Next level of recursion
-				//pathFound = pathFinder(mData);
 			}
 
 			if (walls.D == 0 && !pathFound)
 			{	//Can move in Down direction
-			
-				//Prepare to move (recursive step):
-				//Add current pos to pathArray
-				mData->pathArray[mData->stepNumber].X = mData->position.X;
-				mData->pathArray[mData->stepNumber].Y = mData->position.Y;
-				//increment stepNumber
-				mData->stepNumber += 1;
-				//move pos down
-				mData->position.Y++;
-
-				//Enter Next level of recursion
-				pathFound = pathFinder(mData);
+				pathFound = moveDownMaze(mData);
 			}
 
 			if (walls.L == 0 && !pathFound)
 			{	//Can move in Left direction
-				
-				//Prepare to move (recursive step):				
-				//Add current pos to pathArray
-				mData->pathArray[mData->stepNumber].X = mData->position.X;
-				mData->pathArray[mData->stepNumber].Y = mData->position.Y;
-				//increment stepNumber
-				mData->stepNumber += 1;
-				//move pos left
-				mData->position.X--;
-
-				//Enter Next level of recursion
-				pathFound = pathFinder(mData);
+				pathFound = moveLeftMaze(mData);
 			}
 
 			if (walls.R == 0 && !pathFound)
 			{	//Can move in Right direction
-
-				//Prepare to move (recursive step):
-				//Add current pos to pathArray
-				mData->pathArray[mData->stepNumber].X = mData->position.X;
-				mData->pathArray[mData->stepNumber].Y = mData->position.Y;
-				//increment stepNumber
-				mData->stepNumber += 1;
-				//move pos right
-				mData->position.X++;
-
-				//Enter Next level of recursion
-				pathFound = pathFinder(mData);
+				pathFound = moveRightMaze(mData);
 			}
 			
 			if (pathFound == 0)
