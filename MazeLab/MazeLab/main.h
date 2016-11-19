@@ -40,11 +40,13 @@ typedef enum
 	True = 1
 }BOOL;
 
-void	getMazeData(int** maze, FILE* mazeFile, COORD size);
+char	getMazeData(FILE* mazeFile, MAZEDATA* mData);
 int**	create2DArray(COORD size);
 WALLS	toBinary(int decimal);
 char	moveUpMaze(MAZEDATA* mData);
 char	moveDownMaze(MAZEDATA* mData);
 char	moveRightMaze(MAZEDATA* mData);
 char	moveLeftMaze(MAZEDATA* mData);
-char	pathFinder(MAZEDATA* mData);
+char	pathFinder(	MAZEDATA* mData);
+char	checkFile(FILE* filePointer);
+char	writeSolutionFile(MAZEDATA* mazeData, FILE* solutionFile);
