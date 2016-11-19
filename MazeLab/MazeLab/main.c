@@ -12,9 +12,7 @@ int main(int argc, char *argv[])
 	char* solutionFileName;	//hold solution file name
 	char  error = False;	//General Error Variable
 
-	glutInit(&argc, argv);
-
-	//Check the number of arguments passed and allocation to correct variable.
+							//Check the number of arguments passed and allocation to correct variable.
 	switch (argc)
 	{
 	case 3:	//Only file names passed
@@ -23,9 +21,9 @@ int main(int argc, char *argv[])
 		break;
 
 	case 4:	//files and gui indicater passed
-		guiArg = argv[1];
-		mazeFileName		= argv[2];
-		solutionFileName	= argv[3];
+		guiArg			 = argv[1];
+		mazeFileName	 = argv[2];
+		solutionFileName = argv[3];
 		break;
 
 	default:	//Error in the number of arguments passed
@@ -48,9 +46,9 @@ int main(int argc, char *argv[])
 	if (checkFile(mazeFile) || checkFile(solutionFile))
 	{	//Print errors and exit programe
 		printf("Error: One of the files failed to load!\n");	//display Error message
-		printf("Maze:	  %p \n",	 mazeFile);						//print file pointers to indecate which is Null
+		printf("Maze:	  %p \n", mazeFile);						//print file pointers to indecate which is Null
 		printf("Solution: %p \n", solutionFile);
-		
+
 		getchar();	//Wait for Keypress before Exit
 		return(-1);
 	}
@@ -58,7 +56,7 @@ int main(int argc, char *argv[])
 	{
 		printf("Files Loaded\n");
 	}
-	
+
 	//Create an instance of the MAZEDATA struct to store all data related to the maze
 	MAZEDATA mazeData;
 
@@ -66,9 +64,9 @@ int main(int argc, char *argv[])
 	//COORD sizeMaze, startMaze, endMaze;
 	int foundValues;	//Store the number of successful values read
 	foundValues = fscanf_s(mazeFile, "%d %d %d %d %d %d ",
-		&mazeData.sizeMaze.X,	&mazeData.sizeMaze.Y,
-		&mazeData.startMaze.X,	&mazeData.startMaze.Y,
-		&mazeData.endMaze.X,	&mazeData.endMaze.Y);
+		&mazeData.sizeMaze.X, &mazeData.sizeMaze.Y,
+		&mazeData.startMaze.X, &mazeData.startMaze.Y,
+		&mazeData.endMaze.X, &mazeData.endMaze.Y);
 	//Check if all values successfully read in, should have 6 values
 	if (foundValues != 6)
 	{
@@ -76,11 +74,11 @@ int main(int argc, char *argv[])
 		getchar();	//Wait for Keypress before Exit
 		return (-1);
 	}
-	
+
 	//Create Maze Array, Using Malloc for Dynamic Array sizing
 	mazeData.maze = create2DArray(mazeData.sizeMaze);//create 2D array	
 
-	//Call GetMazeData to read in the Maze values.
+													 //Call GetMazeData to read in the Maze values.
 	error = getMazeData(mazeFile, &mazeData);
 	if (error)
 	{
@@ -91,7 +89,7 @@ int main(int argc, char *argv[])
 
 	//Sets the initial Step number to Zero
 	mazeData.stepNumber = 0;
-	
+
 	//Set initial position to start location
 	mazeData.position = mazeData.startMaze;
 
@@ -121,16 +119,16 @@ int main(int argc, char *argv[])
 
 	if (debug)
 	{	//Debugging Print 
-		
+
 		//Print maze params
 		printf("\nSize:	%d-%d\nStart:	%d-%d\nEnd:	%d-%d\n",
 			mazeData.sizeMaze.X, mazeData.sizeMaze.Y,
 			mazeData.startMaze.X, mazeData.startMaze.Y,
 			mazeData.endMaze.X, mazeData.endMaze.Y);
-		
-		if(printMaze)
+
+		if (printMaze)
 		{	//print maze data
-			int i,j;
+			int i, j;
 			printf("\n");
 			for (j = 0; j < mazeData.sizeMaze.Y; j++)
 			{
@@ -169,22 +167,22 @@ char checkFile(FILE* filePointer)
 
 char getMazeData(FILE* mazeFile, MAZEDATA* mData)
 {	//Gets the Maze values out of the Text File
-	
+
 	//Incrementors
 	int i, j;
 	char readSuccess;	//number of values read in by fscanf
 	int valueCount = 0;	//Total number of values read in
 	int mazeValue;		//Value of maze at position (i,j)
 
-	//Load in 
+						//Load in 
 	for (j = 0; j < mData->sizeMaze.Y; j++)
 	{
 		for (i = 0; i < mData->sizeMaze.X; i++)
 		{
 			readSuccess = fscanf_s(mazeFile, "%d", &mazeValue);	//Pointer increments on each function call
 			valueCount += readSuccess;							//Add number read in to the total
-			
-			//maze value cannot be larger than 15,therefore check and return error if larger.
+
+																//maze value cannot be larger than 15,therefore check and return error if larger.
 			if (mazeValue <= 15)
 			{	//Maze value within range, add to array
 				mData->maze[i][j] = mazeValue;						//Stores 
@@ -203,15 +201,15 @@ char getMazeData(FILE* mazeFile, MAZEDATA* mData)
 	return(False);
 }
 
-int** create2DArray(COORD size) 
+int** create2DArray(COORD size)
 {	//Creates a double pointer and Creates a 2D array of given size.
 	//create the Number of Columns, with data size int
 	int** newArray;
-	newArray = malloc(size.X * sizeof(int));		
-	
+	newArray = malloc(size.X * sizeof(int));
+
 	//Loop through the Number of Columns Creating the Number of Rows
 	int i;
-	for (i = 0; i < size.X; i++)					
+	for (i = 0; i < size.X; i++)
 	{
 		newArray[i] = malloc(size.Y * sizeof(int));
 	}
@@ -314,10 +312,10 @@ WALLS toBinary(int decimal) {
 		walls.R = False;
 		return(walls);
 	default:	//all walls (value 15) should never enter into this position
-		walls.U = 1;
-		walls.L = 1;
-		walls.D = 1;
-		walls.R = 1;
+		walls.U = True;
+		walls.L = True;
+		walls.D = True;
+		walls.R = True;
 		return(walls);
 	}
 }
@@ -375,7 +373,7 @@ char moveRightMaze(MAZEDATA* mData)
 
 char moveLeftMaze(MAZEDATA* mData)
 {	//Can move in Left direction
-				
+
 	//Prepare to move (recursive step):				
 	//Add current pos to pathArray
 	mData->pathArray[mData->stepNumber].X = mData->position.X;
@@ -394,7 +392,7 @@ char pathFinder(MAZEDATA* mData)
 {
 	//char 'Boolean" for when path is found
 	char pathFound = False;
-	
+
 	//Check if current position is the End location (then End)
 	if (mData->position.X == mData->endMaze.X && mData->position.Y == mData->endMaze.Y)
 	{	//End has been reached
@@ -412,7 +410,7 @@ char pathFinder(MAZEDATA* mData)
 		char overlap = 0;
 		//Step through till currrent number of steps taken reached (to prevent checking unused steps in array)
 		//not including current step (not added to array yet) hence 'stepNumber-1'
-		for (i = 0; i < mData->stepNumber-1; i++)
+		for (i = 0; i < mData->stepNumber - 1; i++)
 		{
 			//loop Through all visited locations in pathArray and check if overlapping
 			if (mData->position.X == mData->pathArray[i].X && mData->position.Y == mData->pathArray[i].Y)
@@ -423,14 +421,14 @@ char pathFinder(MAZEDATA* mData)
 
 		if (overlap)
 		{	// path overlaps path already taken, reverse and try another route.
-		
+
 			// Dont add new position to pathArray
 			// decrement stepNumber
 			mData->stepNumber -= 1;
 			// set pos to previous position from pathArray
 			mData->position.X = mData->pathArray[mData->stepNumber].X;
 			mData->position.Y = mData->pathArray[mData->stepNumber].Y;
-			
+
 			// Return pathFound False
 			return(False);
 		}
@@ -439,30 +437,49 @@ char pathFinder(MAZEDATA* mData)
 			//Check which directions are free to move in, and where the path was found in a previous direction and isreturning from recursion
 			//Convert to "binary" values, where 1 indecates a wall in that direction.
 			WALLS walls = toBinary(mData->maze[mData->position.X][mData->position.Y]);
-			if (walls.U == 0 && !pathFound)
+
+			char deltaX;
+			char deltaY;
+			//Calculate difference to get previous move
+			if (mData->stepNumber == 0)
+			{
+				deltaX = 0;
+				deltaY = 0;
+			}
+			else
+			{
+				deltaX = mData->position.X - mData->pathArray[mData->stepNumber - 1].X;	//X direction last taken, R=1, L=-1
+				deltaY = mData->position.Y - mData->pathArray[mData->stepNumber - 1].Y;	//Y direction last taken, D=1, U=-1
+			}
+
+			//debug - turn on/off direction check
+			//deltaX = 0; deltaY = 0;
+
+			//Check if direction free & path not found & hasnt come from that direction
+			if (walls.U == 0 && !pathFound && deltaY !=1)
 			{	//Can move in Up direction
 				pathFound = moveUpMaze(mData);
 			}
 
-			if (walls.D == 0 && !pathFound)
+			if (walls.D == 0 && !pathFound && deltaY != -1)
 			{	//Can move in Down direction
 				pathFound = moveDownMaze(mData);
 			}
 
-			if (walls.L == 0 && !pathFound)
+			if (walls.L == 0 && !pathFound && deltaX != 1)
 			{	//Can move in Left direction
 				pathFound = moveLeftMaze(mData);
 			}
 
-			if (walls.R == 0 && !pathFound)
+			if (walls.R == 0 && !pathFound && deltaX != -1)
 			{	//Can move in Right direction
 				pathFound = moveRightMaze(mData);
 			}
-			
+
 			if (pathFound == 0)
 			{	//if Path still not found, then posible deadend encountered and so
 				//return 0 to upper level and reset all approperate values
-				
+
 				// Dont add new position to pathArray
 				// decrement stepNumber
 				mData->stepNumber -= 1;

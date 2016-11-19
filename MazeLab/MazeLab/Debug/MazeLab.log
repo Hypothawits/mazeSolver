@@ -1,4 +1,3 @@
 ﻿  main.c
-c:\users\tsecc\google drive\work\year 2\programming\maze.git\mazelab\mazelab\main.c(15): warning C4013: 'glutInit' undefined; assuming extern returning int
-main.obj : error LNK2019: unresolved external symbol _glutInit referenced in function _main
-C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze.Git\MazeLab\Debug\MazeLab.exe : fatal error LNK1120: 1 unresolved externals
+  MazeLab.vcxproj -> C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze.Git\MazeLab\Debug\MazeLab.exe
+  MazeLab.vcxproj -> C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze.Git\MazeLab\Debug\MazeLab.pdb (Full PDB)
