@@ -1,9 +1,9 @@
 #pragma once
-typedef struct COORD {
+typedef struct myCOORD {
 	//Struct type for holding X, Y coordinate data
 	int X;
 	int Y;
-}COORD;
+}myCOORD;
 
 typedef struct WALLS {
 	//Struct type for holding 4 bit binary number
@@ -18,16 +18,16 @@ typedef struct MAZEDATA
 	int**	maze;
 
 	//Start and End locations
-	COORD	endMaze;
-	COORD	startMaze;
+	myCOORD	endMaze;
+	myCOORD	startMaze;
 
 	//MAze Size
-	COORD	sizeMaze;
+	myCOORD	sizeMaze;
 
 	//A Coordinate Array. So each step of the path will have an x and y value
-	COORD	pathArray[1000000];	//assumes that maze path will take less than 1 Million 
+	myCOORD	pathArray[1000000];	//assumes that maze path will take less than 1 Million 
 								//Current position in the maze
-	COORD	position;
+	myCOORD	position;
 
 	//number of steps taken
 	int		stepNumber;
@@ -41,7 +41,7 @@ typedef enum
 }BOOL;
 
 char	getMazeData(FILE* mazeFile, MAZEDATA* mData);
-int**	create2DArray(COORD size);
+int**	create2DArray(myCOORD size);
 WALLS	toBinary(int decimal);
 char	moveUpMaze(MAZEDATA* mData);
 char	moveDownMaze(MAZEDATA* mData);

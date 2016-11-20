@@ -1,0 +1,4 @@
+Small 		- 8
+Medium 		- 172
+Large		- 2856
+Very large 	- 26996

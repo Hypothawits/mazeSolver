@@ -1,12 +1,45 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-//#include <windows.h>
+#include <windows.h>
+#include <GL/gl.h>
+#include "glut.h"
 #include "main.h"
 
+//Main Render Function
+void renderScene(void) 
+{	//Example Triangle
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glBegin(GL_TRIANGLES);
+	glVertex3f(-0.5, -0.5, 0.0);
+	glVertex3f(0.5, 0.0, 0.0);
+	glVertex3f(0.0, 0.5, 0.0);
+	glEnd();
+
+	glutSwapBuffers();
+}
 
 int main(int argc, char *argv[])
 {
+	if (True)//OpenGL Debug IF
+	{
+		//Set up OpenGL
+		glutInit(&argc, argv);
+		//Window position
+		glutInitWindowPosition(1, 1);
+		//Window Size
+		glutInitWindowSize(200, 200);
+		//Display properties
+		glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+		//Name window
+		glutCreateWindow("My First Window");
+		//Point to render Function
+		glutDisplayFunc(renderScene);
+		//Start Render Loop
+		glutMainLoop();
+	}
+
 	char* guiArg;			//should maze be drawn
 	char* mazeFileName;		//Hold maze file name
 	char* solutionFileName;	//hold solution file name
@@ -202,7 +235,7 @@ char getMazeData(FILE* mazeFile, MAZEDATA* mData)
 	return(False);
 }
 
-int** create2DArray(COORD size)
+int** create2DArray(myCOORD size)
 {	//Creates a double pointer and Creates a 2D array of given size.
 	//create the Number of Columns, with data size int
 	int** newArray;
