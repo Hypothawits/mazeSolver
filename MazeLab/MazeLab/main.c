@@ -78,8 +78,9 @@ int main(int argc, char *argv[])
 	//Create Maze Array, Using Malloc for Dynamic Array sizing
 	mazeData.maze = create2DArray(mazeData.sizeMaze);//create 2D array	
 
-													 //Call GetMazeData to read in the Maze values.
+	//Call GetMazeData to read in the Maze values.
 	error = getMazeData(mazeFile, &mazeData);
+	
 	if (error)
 	{
 		printf("Error loading maze data from file.");
