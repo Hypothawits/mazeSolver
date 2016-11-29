@@ -6,18 +6,148 @@
 #include "glut.h"
 #include "main.h"
 
+
+
+void renderMaze15(float pos_x, float pos_y, WALLS wall, float length, float height, float width)
+{//Bottom left is 0,0
+	if (wall.D)
+	{	//Draw Down Wall
+		glRectd(pos_x, pos_y, pos_x + length, pos_y + width);
+	}
+	if (wall.L)
+	{	//Draw Left Wall
+		glRectd(pos_x, pos_y, pos_x + width, pos_y + height);
+	}
+	if (wall.R)
+	{	//Draw Right Wall
+		glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + height);
+	}
+	if (wall.U)
+	{	//Draw Top Wall
+		glRectd(pos_x, pos_y + height, pos_x + length, pos_y + height - width);
+	}
+
+	if (wall.U && wall.R)
+	{	//Draw bottom left bit
+		glRectd(pos_x, pos_y, pos_x + width, pos_y + width);
+	}
+	if (wall.D && wall.R)
+	{	//Draw top left bit
+		glRectd(pos_x, pos_y + height, pos_x + width, pos_y + height - width);
+	}
+	if (wall.U && wall.L)
+	{	//Draw bottom right bit
+		glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + width);
+	}
+	if (wall.D && wall.L)
+	{	//Draw top right bit
+		glRectd(pos_x + length, pos_y + height, pos_x + length - width, pos_y + height - width);
+	}
+
+
+
+	//Walls
+	//glRectd(pos_x, pos_y, pos_x + length, pos_y + width);							//Bottom 
+	//glRectd(pos_x, pos_y + height, pos_x + length, pos_y + height - width);		//Top 
+	//glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + height);		//Right
+	//glRectd(pos_x, pos_y, pos_x + width, pos_y + height);							//Left
+
+	//Coners
+	//glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + width);						//Bottom Right
+	//glRectd(pos_x, pos_y, pos_x + width, pos_y + width);											//Bottom Left
+	//glRectd(pos_x + length, pos_y + height, pos_x + length - width, pos_y + height - width);		//Top Right
+	//glRectd(pos_x, pos_y + height, pos_x + width, pos_y + height - width);						//Top Left
+
+	//1
+	//glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + height);			//Right
+
+	//2
+	//glRectd(pos_x, pos_y, pos_x + length, pos_y + width);							//Bottom 
+	
+	//3
+	//glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + height);		//Right
+	//glRectd(pos_x, pos_y, pos_x + length, pos_y + width);							//Bottom 
+	//glRectd(pos_x, pos_y + height, pos_x + width, pos_y + height - width);		//Top Left
+
+	//4
+	//glRectd(pos_x, pos_y, pos_x + width, pos_y + height);							//Left
+	
+	//5
+	//glRectd(pos_x, pos_y, pos_x + width, pos_y + height);						//Left
+	//glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + height);		//Right
+
+	//6
+	//glRectd(pos_x, pos_y, pos_x + width, pos_y + height);							//Left
+	//glRectd(pos_x, pos_y, pos_x + length, pos_y + width);							//Bottom 
+	//glRectd(pos_x + length, pos_y + height, pos_x + length - width, pos_y + height - width);		//Top Right
+
+
+
+
+}
+
 //Main Render Function
 void renderScene(void) 
 {	//Example Triangle
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glBegin(GL_TRIANGLES);
+	//	//glVertex3f(-0.5,	-0.5,	0.0);
+	//	//glVertex3f(0.5,		0.0,	0.0);
+	//	//glVertex3f(0.0,		0.5,	0.0);
+	//	
+	//glEnd();
+	//glRectd(0.0, 0.0, 0.1, 0.1);
 
-	glBegin(GL_TRIANGLES);
-	glVertex3f(-0.5, -0.5, 0.0);
-	glVertex3f(0.5, 0.0, 0.0);
-	glVertex3f(0.0, 0.5, 0.0);
-	glEnd();
+	//Scaling
+	float length = 0.05;
+	float height = 0.05;
+	float width = 0.01;
 
-	glutSwapBuffers();
+	//Origin (bottom left)
+	float origin_x = -1.0; float origin_y = -1.0;
+
+	//Offset
+	float pos_x = origin_x + length * 0;	float pos_y = origin_y + height * 1;
+	
+	WALLS wall = toBinary(12);
+	renderMaze15(pos_x, pos_y, wall, length, height, width);
+
+	pos_x = origin_x + length * 1;	//start + block lentgh * block number
+	wall = toBinary(10);
+	renderMaze15(pos_x, pos_y, wall, length, height, width);
+
+	pos_x = origin_x + length * 2;
+	wall = toBinary(10);
+	renderMaze15(pos_x, pos_y, wall, length, height, width);
+
+	pos_x = origin_x + length * 3;
+	wall = toBinary(9);
+	renderMaze15(pos_x, pos_y, wall, length, height, width);
+
+	pos_x = origin_x + length * 3;
+	pos_y = origin_y + height * 0;
+	wall = toBinary(3);
+	renderMaze15(pos_x, pos_y, wall, length, height, width);
+
+	pos_x = origin_x + length * 2;
+	wall = toBinary(10);
+	renderMaze15(pos_x, pos_y, wall, length, height, width);
+
+	pos_x = origin_x + length * 1;
+	wall = toBinary(10);
+	renderMaze15(pos_x, pos_y, wall, length, height, width);
+
+	pos_x = origin_x + length * 0;
+	wall = toBinary(6);
+	renderMaze15(pos_x, pos_y, wall, length, height, width);
+
+	glutSwapBuffers();		
+	Sleep(500);
+	
+
+	//glRect(x1, y1, x2, y2)
+
+	
 }
 
 int main(int argc, char *argv[])
@@ -29,11 +159,11 @@ int main(int argc, char *argv[])
 		//Window position
 		glutInitWindowPosition(1, 1);
 		//Window Size
-		glutInitWindowSize(200, 200);
+		glutInitWindowSize(500, 500);
 		//Display properties
 		glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 		//Name window
-		glutCreateWindow("My First Window");
+		glutCreateWindow("Maze Name");
 		//Point to render Function
 		glutDisplayFunc(renderScene);
 		//Start Render Loop
