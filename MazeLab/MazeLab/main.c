@@ -1,181 +1,144 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <windows.h>
-#include <GL/gl.h>
-#include "glut.h"
+#include <Windows.h>
+#include <GL/GL.h>
+#include "GL/freeglut.h"
 #include "main.h"
 
+//Global Variables for Rendering the Maze in OpenGL
+float tileSize;			//Float for scaling maze render
+int** renderMazeData;	//Pointer to maze data 
+myCOORD renderMazeSize;	//COORD for maze Size
 
-
-void renderMaze15(float pos_x, float pos_y, WALLS wall, float length, float height, float width)
+void renderMaze15(float pos_x, float pos_y, WALLS wall, float tileSize, float width)
 {//Bottom left is 0,0
+	//Draw walls
 	if (wall.D)
 	{	//Draw Down Wall
-		glRectd(pos_x, pos_y, pos_x + length, pos_y + width);
+		glRectd(pos_x, pos_y, pos_x + tileSize, pos_y + width);
 	}
 	if (wall.L)
 	{	//Draw Left Wall
-		glRectd(pos_x, pos_y, pos_x + width, pos_y + height);
+		glRectd(pos_x, pos_y, pos_x + width, pos_y + tileSize);
 	}
 	if (wall.R)
 	{	//Draw Right Wall
-		glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + height);
+		glRectd(pos_x + tileSize, pos_y, pos_x + tileSize - width, pos_y + tileSize);
 	}
 	if (wall.U)
 	{	//Draw Top Wall
-		glRectd(pos_x, pos_y + height, pos_x + length, pos_y + height - width);
+		glRectd(pos_x, pos_y + tileSize, pos_x + tileSize, pos_y + tileSize - width);
 	}
-
+	//Draw corner Bits
 	if (wall.U && wall.R)
 	{	//Draw bottom left bit
 		glRectd(pos_x, pos_y, pos_x + width, pos_y + width);
 	}
 	if (wall.D && wall.R)
 	{	//Draw top left bit
-		glRectd(pos_x, pos_y + height, pos_x + width, pos_y + height - width);
+		glRectd(pos_x, pos_y + tileSize, pos_x + width, pos_y + tileSize - width);
 	}
 	if (wall.U && wall.L)
 	{	//Draw bottom right bit
-		glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + width);
+		glRectd(pos_x + tileSize, pos_y, pos_x + tileSize - width, pos_y + width);
 	}
 	if (wall.D && wall.L)
 	{	//Draw top right bit
-		glRectd(pos_x + length, pos_y + height, pos_x + length - width, pos_y + height - width);
+		glRectd(pos_x + tileSize, pos_y + tileSize, pos_x + tileSize - width, pos_y + tileSize - width);
 	}
-
-
-
 	//Walls
-	//glRectd(pos_x, pos_y, pos_x + length, pos_y + width);							//Bottom 
-	//glRectd(pos_x, pos_y + height, pos_x + length, pos_y + height - width);		//Top 
-	//glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + height);		//Right
-	//glRectd(pos_x, pos_y, pos_x + width, pos_y + height);							//Left
-
+	//glRectd(pos_x, pos_y, pos_x + tileSize, pos_y + width);							//Bottom 
+	//glRectd(pos_x, pos_y + tileSize, pos_x + tileSize, pos_y + tileSize - width);		//Top 
+	//glRectd(pos_x + tileSize, pos_y, pos_x + tileSize - width, pos_y + tileSize);		//Right
+	//glRectd(pos_x, pos_y, pos_x + width, pos_y + tileSize);							//Left
 	//Coners
-	//glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + width);						//Bottom Right
+	//glRectd(pos_x + tileSize, pos_y, pos_x + tileSize - width, pos_y + width);						//Bottom Right
 	//glRectd(pos_x, pos_y, pos_x + width, pos_y + width);											//Bottom Left
-	//glRectd(pos_x + length, pos_y + height, pos_x + length - width, pos_y + height - width);		//Top Right
-	//glRectd(pos_x, pos_y + height, pos_x + width, pos_y + height - width);						//Top Left
-
-	//1
-	//glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + height);			//Right
-
-	//2
-	//glRectd(pos_x, pos_y, pos_x + length, pos_y + width);							//Bottom 
-	
-	//3
-	//glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + height);		//Right
-	//glRectd(pos_x, pos_y, pos_x + length, pos_y + width);							//Bottom 
-	//glRectd(pos_x, pos_y + height, pos_x + width, pos_y + height - width);		//Top Left
-
-	//4
-	//glRectd(pos_x, pos_y, pos_x + width, pos_y + height);							//Left
-	
-	//5
-	//glRectd(pos_x, pos_y, pos_x + width, pos_y + height);						//Left
-	//glRectd(pos_x + length, pos_y, pos_x + length - width, pos_y + height);		//Right
-
-	//6
-	//glRectd(pos_x, pos_y, pos_x + width, pos_y + height);							//Left
-	//glRectd(pos_x, pos_y, pos_x + length, pos_y + width);							//Bottom 
-	//glRectd(pos_x + length, pos_y + height, pos_x + length - width, pos_y + height - width);		//Top Right
-
-
-
-
+	//glRectd(pos_x + tileSize, pos_y + tileSize, pos_x + tileSize - width, pos_y + tileSize - width);		//Top Right
+	//glRectd(pos_x, pos_y + tileSize, pos_x + width, pos_y + tileSize - width);						//Top Left
 }
 
 //Main Render Function
-void renderScene(void) 
+void renderScene() 
 {	//Example Triangle
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glBegin(GL_TRIANGLES);
-	//	//glVertex3f(-0.5,	-0.5,	0.0);
-	//	//glVertex3f(0.5,		0.0,	0.0);
-	//	//glVertex3f(0.0,		0.5,	0.0);
-	//	
-	//glEnd();
-	//glRectd(0.0, 0.0, 0.1, 0.1);
+	glClear(GL_COLOR_BUFFER_BIT);
 
-	//Scaling
-	float length = 0.05;
-	float height = 0.05;
-	float width = 0.01;
+	//Variables
+	float width = tileSize/5.0;		//Scaling
+	float origin_x = -1.0;			//Origin (bottom left)
+	float origin_y = -1.0;			//Origin (bottom left)
+	float pos_x;
+	float pos_y;
+	WALLS wall;
 
-	//Origin (bottom left)
-	float origin_x = -1.0; float origin_y = -1.0;
+	//Set maze wall colour
+	glColor3f(1, 1, 1);
 
-	//Offset
-	float pos_x = origin_x + length * 0;	float pos_y = origin_y + height * 1;
-	
-	WALLS wall = toBinary(12);
-	renderMaze15(pos_x, pos_y, wall, length, height, width);
+	int i, j;
+	for (j = 0; j < renderMazeSize.Y; j++)
+	{
+		for (i = 0; i < renderMazeSize.X; i++)
+		{
+			wall = toBinary(renderMazeData[i][j]);
 
-	pos_x = origin_x + length * 1;	//start + block lentgh * block number
-	wall = toBinary(10);
-	renderMaze15(pos_x, pos_y, wall, length, height, width);
+			pos_x = origin_x + tileSize * (i);
+			pos_y = origin_y + tileSize * (renderMazeSize.Y-j) - tileSize;		//Invert j (y coordinate) becuase of render system, -tile size is becuase it builds tile upwards, to offset by 1 tile
 
-	pos_x = origin_x + length * 2;
-	wall = toBinary(10);
-	renderMaze15(pos_x, pos_y, wall, length, height, width);
+			renderMaze15(pos_x, pos_y, wall, tileSize, width);
+		}
+	}
 
-	pos_x = origin_x + length * 3;
-	wall = toBinary(9);
-	renderMaze15(pos_x, pos_y, wall, length, height, width);
 
-	pos_x = origin_x + length * 3;
-	pos_y = origin_y + height * 0;
-	wall = toBinary(3);
-	renderMaze15(pos_x, pos_y, wall, length, height, width);
+	////Offset
+	//pos_x = origin_x + tileSize * 0;	
+	//pos_y = origin_y + tileSize * 1;
+	//
+	//WALLS wall = toBinary(12);
+	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
 
-	pos_x = origin_x + length * 2;
-	wall = toBinary(10);
-	renderMaze15(pos_x, pos_y, wall, length, height, width);
+	//pos_x = origin_x + tileSize * 1;	//start + block lentgh * block number
+	//wall = toBinary(10);
+	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
 
-	pos_x = origin_x + length * 1;
-	wall = toBinary(10);
-	renderMaze15(pos_x, pos_y, wall, length, height, width);
+	//pos_x = origin_x + tileSize * 2;
+	//wall = toBinary(10);
+	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
 
-	pos_x = origin_x + length * 0;
-	wall = toBinary(6);
-	renderMaze15(pos_x, pos_y, wall, length, height, width);
+	//pos_x = origin_x + tileSize * 3;
+	//wall = toBinary(9);
+	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
+
+	//pos_x = origin_x + tileSize * 3;
+	//pos_y = origin_y + tileSize * 0;
+	//wall = toBinary(3);
+	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
+
+	//pos_x = origin_x + tileSize * 2;
+	//wall = toBinary(10);
+	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
+
+	//pos_x = origin_x + tileSize * 1;
+	//wall = toBinary(10);
+	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
+
+	//pos_x = origin_x + tileSize * 0;
+	//wall = toBinary(6);
+	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
 
 	glutSwapBuffers();		
-	Sleep(500);
-	
-
-	//glRect(x1, y1, x2, y2)
-
 	
 }
 
 int main(int argc, char *argv[])
 {
-	if (True)//OpenGL Debug IF
-	{
-		//Set up OpenGL
-		glutInit(&argc, argv);
-		//Window position
-		glutInitWindowPosition(1, 1);
-		//Window Size
-		glutInitWindowSize(500, 500);
-		//Display properties
-		glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-		//Name window
-		glutCreateWindow("Maze Name");
-		//Point to render Function
-		glutDisplayFunc(renderScene);
-		//Start Render Loop
-		glutMainLoop();
-	}
-
+	//Draw the maze and solution
 	char* guiArg;			//should maze be drawn
 	char* mazeFileName;		//Hold maze file name
 	char* solutionFileName;	//hold solution file name
 	char  error = False;	//General Error Variable
 
-							//Check the number of arguments passed and allocation to correct variable.
+	//Check the number of arguments passed and allocation to correct variable.
 	switch (argc)
 	{
 	case 3:	//Only file names passed
@@ -307,6 +270,31 @@ int main(int argc, char *argv[])
 		//print solution values
 		printf("\nMaze Route Found: %d", pathFound);
 		printf("\nNumber of Steps: %d", mazeData.stepNumber);
+	}
+
+	
+	if (True) //Open GL 
+	{
+		//Set globals to values, to 'pass' them into render function
+		tileSize = 2.0 / mazeData.sizeMaze.X;	//Divide grind into X number of tiles with size a fraction of 1 <- is this english?
+		renderMazeData = mazeData.maze;	
+		renderMazeSize = mazeData.sizeMaze;
+
+
+		//Set up OpenGL
+		glutInit(&argc, argv);
+		//Window position
+		glutInitWindowPosition(100, 100);
+		//Window
+		glutInitWindowSize(500*(mazeData.sizeMaze.X/mazeData.sizeMaze.Y), 500);	//Set grid to same aspect ration as maze
+		//Display properties
+		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+		//Name window
+		glutCreateWindow("Maze Name");
+		//Point to render Function
+		glutDisplayFunc(renderScene);
+		//Start Render Loop
+		glutMainLoop();
 	}
 
 	while (True);

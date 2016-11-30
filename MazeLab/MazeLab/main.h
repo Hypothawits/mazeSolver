@@ -25,7 +25,7 @@ typedef struct MAZEDATA
 	myCOORD	sizeMaze;
 
 	//A Coordinate Array. So each step of the path will have an x and y value
-	myCOORD	pathArray[1000000];	//assumes that maze path will take less than 1 Million 
+	myCOORD	pathArray[500000];	//assumes that maze path will take less than 1 Million 
 								//Current position in the maze
 	myCOORD	position;
 

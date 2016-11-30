@@ -1,2 +1,6 @@
-﻿  MazeLab.vcxproj -> C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze.Git\MazeLab\Debug\MazeLab.exe
+﻿  main.c
+c:\users\tsecc\google drive\work\year 2\programming\maze.git\mazelab\mazelab\main.c(68): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\tsecc\google drive\work\year 2\programming\maze.git\mazelab\mazelab\main.c(278): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\tsecc\google drive\work\year 2\programming\maze.git\mazelab\mazelab\main.c(294): warning C4113: 'void (__cdecl *)()' differs in parameter lists from 'void (__cdecl *)(void)'
+  MazeLab.vcxproj -> C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze.Git\MazeLab\Debug\MazeLab.exe
   MazeLab.vcxproj -> C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze.Git\MazeLab\Debug\MazeLab.pdb (Full PDB)
