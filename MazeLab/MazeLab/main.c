@@ -1,142 +1,147 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <Windows.h>
-#include <GL/GL.h>
-#include "GL/freeglut.h"
 #include "main.h"
 
-//Global Variables for Rendering the Maze in OpenGL
-float tileSize;			//Float for scaling maze render
-int** renderMazeData;	//Pointer to maze data 
-myCOORD renderMazeSize;	//COORD for maze Size
+//#include <Windows.h>
+//#include <GL/GL.h>
+//#include "GL/freeglut.h"
 
-void renderMaze15(float pos_x, float pos_y, WALLS wall, float tileSize, float width)
-{//Bottom left is 0,0
-	//Draw walls
-	if (wall.D)
-	{	//Draw Down Wall
-		glRectd(pos_x, pos_y, pos_x + tileSize, pos_y + width);
-	}
-	if (wall.L)
-	{	//Draw Left Wall
-		glRectd(pos_x, pos_y, pos_x + width, pos_y + tileSize);
-	}
-	if (wall.R)
-	{	//Draw Right Wall
-		glRectd(pos_x + tileSize, pos_y, pos_x + tileSize - width, pos_y + tileSize);
-	}
-	if (wall.U)
-	{	//Draw Top Wall
-		glRectd(pos_x, pos_y + tileSize, pos_x + tileSize, pos_y + tileSize - width);
-	}
-	//Draw corner Bits
-	if (wall.U && wall.R)
-	{	//Draw bottom left bit
-		glRectd(pos_x, pos_y, pos_x + width, pos_y + width);
-	}
-	if (wall.D && wall.R)
-	{	//Draw top left bit
-		glRectd(pos_x, pos_y + tileSize, pos_x + width, pos_y + tileSize - width);
-	}
-	if (wall.U && wall.L)
-	{	//Draw bottom right bit
-		glRectd(pos_x + tileSize, pos_y, pos_x + tileSize - width, pos_y + width);
-	}
-	if (wall.D && wall.L)
-	{	//Draw top right bit
-		glRectd(pos_x + tileSize, pos_y + tileSize, pos_x + tileSize - width, pos_y + tileSize - width);
-	}
-	//Walls
-	//glRectd(pos_x, pos_y, pos_x + tileSize, pos_y + width);							//Bottom 
-	//glRectd(pos_x, pos_y + tileSize, pos_x + tileSize, pos_y + tileSize - width);		//Top 
-	//glRectd(pos_x + tileSize, pos_y, pos_x + tileSize - width, pos_y + tileSize);		//Right
-	//glRectd(pos_x, pos_y, pos_x + width, pos_y + tileSize);							//Left
-	//Coners
-	//glRectd(pos_x + tileSize, pos_y, pos_x + tileSize - width, pos_y + width);						//Bottom Right
-	//glRectd(pos_x, pos_y, pos_x + width, pos_y + width);											//Bottom Left
-	//glRectd(pos_x + tileSize, pos_y + tileSize, pos_x + tileSize - width, pos_y + tileSize - width);		//Top Right
-	//glRectd(pos_x, pos_y + tileSize, pos_x + width, pos_y + tileSize - width);						//Top Left
-}
+////Global Variables for Rendering the Maze in OpenGL
+//float tileSize;			//Float for scaling maze render
+//int** renderMazeData;	//Pointer to maze data 
+//myCOORD renderMazeSize;	//COORD for maze Size
+
+//void renderMaze15(float pos_x, float pos_y, WALLS wall, float tileSize, float width)
+//{//Bottom left is 0,0
+//	//Draw walls
+//	if (wall.D)
+//	{	//Draw Down Wall
+//		glRectd(pos_x, pos_y, pos_x + tileSize, pos_y + width);
+//	}
+//	if (wall.L)
+//	{	//Draw Left Wall
+//		glRectd(pos_x, pos_y, pos_x + width, pos_y + tileSize);
+//	}
+//	if (wall.R)
+//	{	//Draw Right Wall
+//		glRectd(pos_x + tileSize, pos_y, pos_x + tileSize - width, pos_y + tileSize);
+//	}
+//	if (wall.U)
+//	{	//Draw Top Wall
+//		glRectd(pos_x, pos_y + tileSize, pos_x + tileSize, pos_y + tileSize - width);
+//	}
+//	//Draw corner Bits
+//	if (wall.U && wall.R)
+//	{	//Draw bottom left bit
+//		glRectd(pos_x, pos_y, pos_x + width, pos_y + width);
+//	}
+//	if (wall.D && wall.R)
+//	{	//Draw top left bit
+//		glRectd(pos_x, pos_y + tileSize, pos_x + width, pos_y + tileSize - width);
+//	}
+//	if (wall.U && wall.L)
+//	{	//Draw bottom right bit
+//		glRectd(pos_x + tileSize, pos_y, pos_x + tileSize - width, pos_y + width);
+//	}
+//	if (wall.D && wall.L)
+//	{	//Draw top right bit
+//		glRectd(pos_x + tileSize, pos_y + tileSize, pos_x + tileSize - width, pos_y + tileSize - width);
+//	}
+//	//Walls
+//	//glRectd(pos_x, pos_y, pos_x + tileSize, pos_y + width);							//Bottom 
+//	//glRectd(pos_x, pos_y + tileSize, pos_x + tileSize, pos_y + tileSize - width);		//Top 
+//	//glRectd(pos_x + tileSize, pos_y, pos_x + tileSize - width, pos_y + tileSize);		//Right
+//	//glRectd(pos_x, pos_y, pos_x + width, pos_y + tileSize);							//Left
+//	//Coners
+//	//glRectd(pos_x + tileSize, pos_y, pos_x + tileSize - width, pos_y + width);						//Bottom Right
+//	//glRectd(pos_x, pos_y, pos_x + width, pos_y + width);											//Bottom Left
+//	//glRectd(pos_x + tileSize, pos_y + tileSize, pos_x + tileSize - width, pos_y + tileSize - width);		//Top Right
+//	//glRectd(pos_x, pos_y + tileSize, pos_x + width, pos_y + tileSize - width);						//Top Left
+//}
 
 //Main Render Function
-void renderScene() 
-{	//Example Triangle
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	//Variables
-	float width = tileSize/5.0;		//Scaling
-	float origin_x = -1.0;			//Origin (bottom left)
-	float origin_y = -1.0;			//Origin (bottom left)
-	float pos_x;
-	float pos_y;
-	WALLS wall;
-
-	//Set maze wall colour
-	glColor3f(1, 1, 1);
-
-	int i, j;
-	for (j = 0; j < renderMazeSize.Y; j++)
-	{
-		for (i = 0; i < renderMazeSize.X; i++)
-		{
-			wall = toBinary(renderMazeData[i][j]);
-
-			pos_x = origin_x + tileSize * (i);
-			pos_y = origin_y + tileSize * (renderMazeSize.Y-j) - tileSize;		//Invert j (y coordinate) becuase of render system, -tile size is becuase it builds tile upwards, to offset by 1 tile
-
-			renderMaze15(pos_x, pos_y, wall, tileSize, width);
-		}
-	}
-
-
-	////Offset
-	//pos_x = origin_x + tileSize * 0;	
-	//pos_y = origin_y + tileSize * 1;
-	//
-	//WALLS wall = toBinary(12);
-	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
-
-	//pos_x = origin_x + tileSize * 1;	//start + block lentgh * block number
-	//wall = toBinary(10);
-	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
-
-	//pos_x = origin_x + tileSize * 2;
-	//wall = toBinary(10);
-	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
-
-	//pos_x = origin_x + tileSize * 3;
-	//wall = toBinary(9);
-	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
-
-	//pos_x = origin_x + tileSize * 3;
-	//pos_y = origin_y + tileSize * 0;
-	//wall = toBinary(3);
-	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
-
-	//pos_x = origin_x + tileSize * 2;
-	//wall = toBinary(10);
-	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
-
-	//pos_x = origin_x + tileSize * 1;
-	//wall = toBinary(10);
-	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
-
-	//pos_x = origin_x + tileSize * 0;
-	//wall = toBinary(6);
-	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
-
-	glutSwapBuffers();		
-	
-}
+//void renderScene() 
+//{	//Example Triangle
+//	glClear(GL_COLOR_BUFFER_BIT);
+//
+//	//Variables
+//	float width = tileSize/5.0;		//Scaling
+//	float origin_x = -1.0;			//Origin (bottom left)
+//	float origin_y = -1.0;			//Origin (bottom left)
+//	float pos_x;
+//	float pos_y;
+//	WALLS wall;
+//
+//	//Set maze wall colour
+//	glColor3f(1, 1, 1);
+//
+//	int i, j;
+//	for (j = 0; j < renderMazeSize.Y; j++)
+//	{
+//		for (i = 0; i < renderMazeSize.X; i++)
+//		{
+//			wall = toBinary(renderMazeData[i][j]);
+//
+//			pos_x = origin_x + tileSize * (i);
+//			pos_y = origin_y + tileSize * (renderMazeSize.Y-j) - tileSize;		//Invert j (y coordinate) becuase of render system, -tile size is becuase it builds tile upwards, to offset by 1 tile
+//
+//			renderMaze15(pos_x, pos_y, wall, tileSize, width);
+//		}
+//	}
+//
+//
+//	////Offset
+//	//pos_x = origin_x + tileSize * 0;	
+//	//pos_y = origin_y + tileSize * 1;
+//	//
+//	//WALLS wall = toBinary(12);
+//	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
+//
+//	//pos_x = origin_x + tileSize * 1;	//start + block lentgh * block number
+//	//wall = toBinary(10);
+//	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
+//
+//	//pos_x = origin_x + tileSize * 2;
+//	//wall = toBinary(10);
+//	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
+//
+//	//pos_x = origin_x + tileSize * 3;
+//	//wall = toBinary(9);
+//	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
+//
+//	//pos_x = origin_x + tileSize * 3;
+//	//pos_y = origin_y + tileSize * 0;
+//	//wall = toBinary(3);
+//	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
+//
+//	//pos_x = origin_x + tileSize * 2;
+//	//wall = toBinary(10);
+//	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
+//
+//	//pos_x = origin_x + tileSize * 1;
+//	//wall = toBinary(10);
+//	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
+//
+//	//pos_x = origin_x + tileSize * 0;
+//	//wall = toBinary(6);
+//	//renderMaze15(pos_x, pos_y, wall, tileSize, width);
+//
+//	glutSwapBuffers();		
+//	
+//}
 
 int main(int argc, char *argv[])
 {
-	//Draw the maze and solution
+	printf("Program Started\n");
+	//Variables
 	char* guiArg;			//should maze be drawn
-	char* mazeFileName;		//Hold maze file name
-	char* solutionFileName;	//hold solution file name
-	char  error = False;	//General Error Variable
+	char* mazeFileName = " ";		//Hold maze file name
+	char* solutionFileName = " ";	//hold solution file name
+
+	//create File pointers and open Files
+	FILE *mazeFile = 0;
+	FILE *solutionFile = 0;
 
 	//Check the number of arguments passed and allocation to correct variable.
 	switch (argc)
@@ -156,63 +161,28 @@ int main(int argc, char *argv[])
 		printf("Error: Invalid Number of arguments Passed\n");
 		printf("Press enter to exit Program.");
 
-		getchar();	//Wait for Keypress before Exit
-		return(-1);
+		quitError();
 		break;
 	}
-
-	//create File pointers and open Files
-	FILE *mazeFile = 0;
-	FILE *solutionFile = 0;
-
+	
 	fopen_s(&mazeFile, mazeFileName, "r");
 	fopen_s(&solutionFile, solutionFileName, "w");
 
 	//Check if the file opened successfully
-	if (checkFile(mazeFile) || checkFile(solutionFile))
-	{	//Print errors and exit programe
-		printf("Error: One of the files failed to load!\n");	//display Error message
-		printf("Maze:	  %p \n", mazeFile);						//print file pointers to indecate which is Null
-		printf("Solution: %p \n", solutionFile);
-
-		getchar();	//Wait for Keypress before Exit
-		return(-1);
-	}
-	else
-	{
-		printf("Files Loaded\n");
-	}
+	checkFile(mazeFile, mazeFileName);
+	checkFile(solutionFile, solutionFileName);
 
 	//Create an instance of the MAZEDATA struct to store all data related to the maze
 	MAZEDATA mazeData;
 
-	//read in maze size, start and end location, store XY values in Coordinate Struct
-	//COORD sizeMaze, startMaze, endMaze;
-	int foundValues;	//Store the number of successful values read
-	foundValues = fscanf_s(mazeFile, "%d %d %d %d %d %d ",
-		&mazeData.sizeMaze.X, &mazeData.sizeMaze.Y,
-		&mazeData.startMaze.X, &mazeData.startMaze.Y,
-		&mazeData.endMaze.X, &mazeData.endMaze.Y);
-	//Check if all values successfully read in, should have 6 values
-	if (foundValues != 6)
-	{
-		printf("Error reading in Size, starting location and End location");
-		getchar();	//Wait for Keypress before Exit
-		return (-1);
-	}
-
-	//Create Maze Array, Using Malloc for Dynamic Array sizing
-	mazeData.maze = create2DArray(mazeData.sizeMaze);//create 2D array	
-
-	//Call GetMazeData to read in the Maze values.
-	error = getMazeData(mazeFile, &mazeData);
+	//Read in maze Parameters
+	getMazeParam(mazeFile, &mazeData);
 	
-	if (error)
-	{
-		printf("Error loading maze data from file.");
-		getchar();	//Wait for Keypress before Exit
-		return (-1);
-	}
+	//Create Maze Array, Using Malloc for Dynamic Array sizing
+	create2DArray(&mazeData);	//create 2D array	
+
+	//Call to read in the Maze values.
+	getMazeData(mazeFile, &mazeData);
 
 	//Sets the initial Step number to Zero
 	mazeData.stepNumber = 0;
@@ -227,22 +197,18 @@ int main(int argc, char *argv[])
 	//and write the direction (append) to the solution file
 	if (pathFound)
 	{	//convert and write to file
-		error = writeSolutionFile(&mazeData, solutionFile);
-		if (error)
-		{
-			printf("Failed to write to Solution File.");
-			getchar();	//Wait for Keypress before Exit
-			return(-1);
-		}
+		writeSolutionFile(&mazeData, solutionFile);
 	}
 	else
 	{
 		printf("No Path found, Maze not solved!");
+		quitError();
 	}
 
 	//Debuging Options
-	char debug = True;
-	char printMaze = False;
+	char debug			= True;
+	char printMaze		= False;
+	char openGLDisplay	= False;
 
 	if (debug)
 	{	//Debugging Print 
@@ -273,51 +239,70 @@ int main(int argc, char *argv[])
 	}
 
 	
-	if (True) //Open GL 
-	{
-		//Set globals to values, to 'pass' them into render function
-		tileSize = 2.0 / mazeData.sizeMaze.X;	//Divide grind into X number of tiles with size a fraction of 1 <- is this english?
-		renderMazeData = mazeData.maze;	
-		renderMazeSize = mazeData.sizeMaze;
+	//if (False) //Open GL 
+	//{
+	//	//Set globals to values, to 'pass' them into render function
+	//	tileSize = 2.0 / mazeData.sizeMaze.X;	//Divide grind into X number of tiles with size a fraction of 1 <- is this english?
+	//	renderMazeData = mazeData.maze;	
+	//	renderMazeSize = mazeData.sizeMaze;
 
-
-		//Set up OpenGL
-		glutInit(&argc, argv);
-		//Window position
-		glutInitWindowPosition(100, 100);
-		//Window
-		glutInitWindowSize(500*(mazeData.sizeMaze.X/mazeData.sizeMaze.Y), 500);	//Set grid to same aspect ration as maze
-		//Display properties
-		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-		//Name window
-		glutCreateWindow("Maze Name");
-		//Point to render Function
-		glutDisplayFunc(renderScene);
-		//Start Render Loop
-		glutMainLoop();
-	}
+	//	//Set up OpenGL
+	//	glutInit(&argc, argv);
+	//	//Window position
+	//	glutInitWindowPosition(100, 100);
+	//	//Window
+	//	glutInitWindowSize(500*(mazeData.sizeMaze.X/mazeData.sizeMaze.Y), 500);	//Set grid to same aspect ration as maze
+	//	//Display properties
+	//	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+	//	//Name window
+	//	glutCreateWindow("Maze Name");
+	//	//Point to render Function
+	//	glutDisplayFunc(renderScene);
+	//	//Start Render Loop
+	//	glutMainLoop();
+	//}
 
 	while (True);
 	//Close the file
 	free(mazeData.maze);
 	fclose(mazeFile);
-
+	fclose(solutionFile);
 	return(0);
 }
 
-char checkFile(FILE* filePointer)
+void checkFile(FILE* filePointer, char* fileName1)
 {	//Check if the file opened successfully
 	if ((filePointer == NULL))
-	{
-		return(True);
+	{	//Error has occured
+		printf("Error, Failed to open: %s\n", fileName1);	//display Error message
+		quitError();
+		return;
 	}
 	else
-	{
-		return(False);
+	{	//No Error
+		printf("Opened File: %s\n", fileName1);
+		return;
 	}
 }
 
-char getMazeData(FILE* mazeFile, MAZEDATA* mData)
+void getMazeParam(FILE* mazeFile, MAZEDATA* mazeData)
+{	//read in maze size, start and end location, store XY values in Coordinate Struct
+	int foundValues;	//Store the number of successful values read
+	foundValues = fscanf_s(mazeFile, "%d %d %d %d %d %d ",
+		&mazeData->sizeMaze.Y, &mazeData->sizeMaze.X,
+		&mazeData->startMaze.Y, &mazeData->startMaze.X,
+		&mazeData->endMaze.Y, &mazeData->endMaze.X);
+
+	//Check if all values successfully read in, should have 6 values
+	if (foundValues != 6)
+	{
+		printf("Error reading in Size, starting location and End location");
+		getchar();	//Wait for Keypress before Exit
+		exit;
+	}
+}
+
+void getMazeData(FILE* mazeFile, MAZEDATA* mData)
 {	//Gets the Maze values out of the Text File
 
 	//Incrementors
@@ -326,7 +311,7 @@ char getMazeData(FILE* mazeFile, MAZEDATA* mData)
 	int valueCount = 0;	//Total number of values read in
 	int mazeValue;		//Value of maze at position (i,j)
 
-						//Load in 
+	//Increment through each value of maze data
 	for (j = 0; j < mData->sizeMaze.Y; j++)
 	{
 		for (i = 0; i < mData->sizeMaze.X; i++)
@@ -341,31 +326,37 @@ char getMazeData(FILE* mazeFile, MAZEDATA* mData)
 			}
 			else
 			{	//Maze value out of range, throw Error
-				return(True);
+				printf("Error Loading Maze Data\n");
+				printf("Error: Invalid Maze Data in File\n");
+				quitError();
 			}
 		}
 	}
 	if (valueCount != mData->sizeMaze.X*mData->sizeMaze.Y)
 	{	//if Value Count doesn't match the number in the maze, give error 
-		return(True);
+		printf("Error Loading Maze Data\n");
+		printf("Error: Insufficient Maze Data in File\n");
+		quitError();
 	}
 
-	return(False);
+	return;		//return with no error
 }
 
-int** create2DArray(myCOORD size)
+void create2DArray(MAZEDATA* mData)
 {	//Creates a double pointer and Creates a 2D array of given size.
 	//create the Number of Columns, with data size int
 	int** newArray;
-	newArray = malloc(size.X * sizeof(int));
+	newArray = malloc(mData->sizeMaze.X * sizeof(int));
 
 	//Loop through the Number of Columns Creating the Number of Rows
 	int i;
-	for (i = 0; i < size.X; i++)
+	for (i = 0; i < mData->sizeMaze.X; i++)
 	{
-		newArray[i] = malloc(size.Y * sizeof(int));
+		newArray[i] = malloc(mData->sizeMaze.Y * sizeof(int));
 	}
-	return(newArray);
+
+	mData->maze = newArray;
+	return;
 }
 
 WALLS toBinary(int decimal) {
@@ -650,11 +641,10 @@ char pathFinder(MAZEDATA* mData)
 	}
 }
 
-char writeSolutionFile(MAZEDATA* mazeData, FILE* solutionFile)
+void writeSolutionFile(MAZEDATA* mazeData, FILE* solutionFile)
 {	//Loop through all steps up to step number
 	//Compare current location with next location
 
-	char Error = False;
 	//write number of moves required to solve maze to solutionFile
 	fprintf_s(solutionFile, "%d", mazeData->stepNumber);
 	fprintf_s(solutionFile, "\n");			//add new line
@@ -678,7 +668,9 @@ char writeSolutionFile(MAZEDATA* mazeData, FILE* solutionFile)
 				break;
 
 			default:	//Case: Error invalid move
-				Error = True;
+				printf("Error Writing Solution\n");
+				printf("Invalid Move Taken\n");
+				quitError();
 				break;
 			}
 		}
@@ -695,11 +687,19 @@ char writeSolutionFile(MAZEDATA* mazeData, FILE* solutionFile)
 				break;
 
 			default:	//Case: Error invalid move
-				Error = True;
+				printf("Error Writing Solution\n");
+				printf("Invalid Move Taken\n");
+				quitError();
 				break;
 			}
 		}
 	}
 
-	return(Error);
+	return;	//No Error
+}
+
+void quitError()
+{
+	getchar();
+	exit(-1);
 }
