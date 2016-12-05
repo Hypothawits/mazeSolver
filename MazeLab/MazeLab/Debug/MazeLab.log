@@ -1,7 +1,2 @@
-﻿  main.c
-c:\users\tsecc\google drive\work\year 2\programming\maze.git\mazelab\mazelab\main.c(172): warning C4020: 'checkFile': too many actual parameters
-c:\users\tsecc\google drive\work\year 2\programming\maze.git\mazelab\mazelab\main.c(173): warning C4020: 'checkFile': too many actual parameters
-c:\users\tsecc\google drive\work\year 2\programming\maze.git\mazelab\mazelab\main.c(276): warning C4029: declared formal parameter list different from definition
-c:\users\tsecc\google drive\work\year 2\programming\maze.git\mazelab\mazelab\main.c(303): warning C4550: expression evaluates to a function which is missing an argument list
-  MazeLab.vcxproj -> C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze.Git\MazeLab\Debug\MazeLab.exe
+﻿  MazeLab.vcxproj -> C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze.Git\MazeLab\Debug\MazeLab.exe
   MazeLab.vcxproj -> C:\Users\tsecc\Google Drive\Work\Year 2\Programming\Maze.Git\MazeLab\Debug\MazeLab.pdb (Full PDB)

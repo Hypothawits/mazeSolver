@@ -16,6 +16,7 @@ typedef struct MAZEDATA
 {
 	//Maze data
 	int**	maze;
+	int**	mazeVisit;
 
 	//Start and End locations
 	myCOORD	endMaze;
@@ -54,5 +55,5 @@ char	moveRightMaze(MAZEDATA* mData);
 char	moveLeftMaze(MAZEDATA* mData);
 char	pathFinder(	MAZEDATA* mData);
 
-void	checkFile(FILE* filePointer);
+void	checkFile(FILE* filePointer, char* fileName1);
 void	writeSolutionFile(MAZEDATA* mazeData, FILE* solutionFile);
